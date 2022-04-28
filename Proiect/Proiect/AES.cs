@@ -15,21 +15,19 @@ namespace Proiect
             Key = aes.Key;
             IV = aes.IV;
         }
-        public byte[] Encrypt(string plainText)
-        {
+        public byte[] Encrypt(string plainText) {
             byte[] encrypted;
             AesManaged aes = new AesManaged();
+            aes.Padding = PaddingMode.PKCS7;
             ICryptoTransform encryptor = aes.CreateEncryptor(Key, IV);
-            using (MemoryStream ms = new MemoryStream())
-            {
+            using (MemoryStream ms = new MemoryStream()) {
                   
                 using (CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
                 {
                     using (StreamWriter sw = new StreamWriter(cs))
                         sw.Write(plainText);
                     encrypted = ms.ToArray();
-                }
-                
+                }               
             }
             return encrypted;
         }
@@ -38,6 +36,7 @@ namespace Proiect
             string plaintext = null;
             using (AesManaged aes = new AesManaged())
             {
+                aes.Padding = PaddingMode.PKCS7;
                 ICryptoTransform decryptor = aes.CreateDecryptor(Key, IV);
                 using (MemoryStream ms = new MemoryStream(cipherText))
                 {

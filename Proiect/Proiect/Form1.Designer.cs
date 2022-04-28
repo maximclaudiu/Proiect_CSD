@@ -30,7 +30,7 @@ namespace Proiect
         private void InitializeComponent()
         {
             this.Connect_B = new System.Windows.Forms.Button();
-            this.Text_from_files = new System.Windows.Forms.TextBox();
+            this.Text_from_file = new System.Windows.Forms.TextBox();
             this.Select_B = new System.Windows.Forms.Button();
             this.List_Crypto = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -39,7 +39,7 @@ namespace Proiect
             this.Decrypt_B = new System.Windows.Forms.Button();
             this.Console = new System.Windows.Forms.TextBox();
             this.Console_labe = new System.Windows.Forms.Label();
-            this.Text_from_file = new System.Windows.Forms.Label();
+            this.File_Name = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Connect_B
@@ -52,14 +52,14 @@ namespace Proiect
             this.Connect_B.UseVisualStyleBackColor = true;
             this.Connect_B.Click += new System.EventHandler(this.Connect_B_Click);
             // 
-            // Text_from_files
+            // Text_from_file
             // 
-            this.Text_from_files.Location = new System.Drawing.Point(12, 33);
-            this.Text_from_files.Multiline = true;
-            this.Text_from_files.Name = "Text_from_files";
-            this.Text_from_files.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.Text_from_files.Size = new System.Drawing.Size(647, 269);
-            this.Text_from_files.TabIndex = 1;
+            this.Text_from_file.Location = new System.Drawing.Point(12, 33);
+            this.Text_from_file.Multiline = true;
+            this.Text_from_file.Name = "Text_from_file";
+            this.Text_from_file.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.Text_from_file.Size = new System.Drawing.Size(647, 269);
+            this.Text_from_file.TabIndex = 1;
             // 
             // Select_B
             // 
@@ -75,7 +75,7 @@ namespace Proiect
             // 
             this.List_Crypto.FormattingEnabled = true;
             this.List_Crypto.Items.AddRange(new object[] {
-            "1- Ceasar",
+            "1- ASN1",
             "2- AES",
             "3- DES",
             "4- RSA",
@@ -146,20 +146,20 @@ namespace Proiect
             this.Console_labe.TabIndex = 8;
             this.Console_labe.Text = "MYSQL_Console:";
             // 
-            // Text_from_file
+            // File_Name
             // 
-            this.Text_from_file.AutoSize = true;
-            this.Text_from_file.Location = new System.Drawing.Point(12, 12);
-            this.Text_from_file.Name = "Text_from_file";
-            this.Text_from_file.Size = new System.Drawing.Size(0, 15);
-            this.Text_from_file.TabIndex = 9;
+            this.File_Name.AutoSize = true;
+            this.File_Name.Location = new System.Drawing.Point(12, 12);
+            this.File_Name.Name = "File_Name";
+            this.File_Name.Size = new System.Drawing.Size(0, 15);
+            this.File_Name.TabIndex = 9;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(817, 450);
-            this.Controls.Add(this.Text_from_file);
+            this.Controls.Add(this.File_Name);
             this.Controls.Add(this.Console_labe);
             this.Controls.Add(this.Console);
             this.Controls.Add(this.Decrypt_B);
@@ -168,7 +168,7 @@ namespace Proiect
             this.Controls.Add(this.label1);
             this.Controls.Add(this.List_Crypto);
             this.Controls.Add(this.Select_B);
-            this.Controls.Add(this.Text_from_files);
+            this.Controls.Add(this.Text_from_file);
             this.Controls.Add(this.Connect_B);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -180,7 +180,7 @@ namespace Proiect
         #endregion
 
         private System.Windows.Forms.Button Connect_B;
-        private System.Windows.Forms.TextBox Text_from_files;
+        private System.Windows.Forms.TextBox Text_from_file;
         private System.Windows.Forms.Button Select_B;
         private System.Windows.Forms.ComboBox List_Crypto;
         private System.Windows.Forms.Label label1;
@@ -189,7 +189,7 @@ namespace Proiect
         private System.Windows.Forms.Button Decrypt_B;
         private System.Windows.Forms.TextBox Console;
         private System.Windows.Forms.Label Console_labe;
-        private System.Windows.Forms.Label Text_from_file;
+        private System.Windows.Forms.Label File_Name;
     }
 }
 

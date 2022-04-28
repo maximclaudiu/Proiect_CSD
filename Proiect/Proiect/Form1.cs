@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using System.IO;
+using System.Text;
 
 namespace Proiect
 {
@@ -15,7 +16,11 @@ namespace Proiect
         MySqlDataReader reader;
         string query = "select * from `keys`";
         UInt16 choice = 0;
-        string fileContent;
+        byte[] crypted;
+        Files files = new Files(); 
+        AES aes = new AES();
+        DES des = new DES();
+
         public Form1() {
             InitializeComponent();
         }
@@ -33,7 +38,7 @@ namespace Proiect
                     Decrypt_B.Enabled = true;
                 }
                 catch (Exception ex) {
-                    Text_from_files.Text = ex.Message;
+                    Text_from_file.Text = ex.Message;
                 }
             else {
                 con.Close();
@@ -49,14 +54,14 @@ namespace Proiect
 
                 command.CommandText = query;
                 reader = command.ExecuteReader();
-                Text_from_files.Text = "";
+                Text_from_file.Text = "";
                 while (reader.Read()) {
                     int i = 0;
                     while (i < reader.FieldCount) {
-                        Text_from_files.Text += reader[i].ToString() + " ";
+                        Text_from_file.Text += reader[i].ToString() + " ";
                         i++;
                     }
-                    Text_from_files.Text += "\r\n";
+                    Text_from_file.Text += "\r\n";
                 }
                 reader.Close();
             }
@@ -67,40 +72,26 @@ namespace Proiect
         }
 
         private void Open_B_Click(object sender, EventArgs e) {
-            string location = Application.StartupPath;
-            location = location.Substring(0, location.Length - 25);
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.InitialDirectory = location;
-                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-                openFileDialog.FilterIndex = 2;
-                openFileDialog.RestoreDirectory = true;
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK) {
-                    string filePath = openFileDialog.FileName;
-                    var fileStream = openFileDialog.OpenFile();
-
-                    using (StreamReader reader = new StreamReader(fileStream)) {
-                        fileContent = reader.ReadToEnd();
-                        Text_from_files.Text = fileContent;
-                        Text_from_file.Text = openFileDialog.FileName.Split('\\').Last();
-                    }
-                }
-            }
+            var strings = files.openFile();
+            Text_from_file.Text = strings.Item1;
+            File_Name.Text = strings.Item2;
         }
 
         private void Crypt_B_Click(object sender, EventArgs e) {
             switch (choice) {
                 case 1:
                     break;
-                case 2: {
-                        AES aes = new AES();
-                        aes.Initialize();
-                        string encrypt = System.Text.Encoding.UTF8.GetString(aes.Encrypt(fileContent));
-                        Text_from_files.Text = encrypt;
-                        break;
-                    }
+                case 2: 
+                    aes.Initialize();
+                    crypted = aes.Encrypt(Text_from_file.Text);
+                    Text_from_file.Text = System.Text.Encoding.UTF8.GetString(crypted);
+                    files.writeFile(Text_from_file.Text, "AES"+File_Name.Text);
+                    break;                    
                 case 3:
+                    des.Initialize();
+                    crypted = des.Encrypt(Text_from_file.Text);
+                    Text_from_file.Text = System.Text.Encoding.UTF8.GetString(crypted);
+                    files.writeFile(Text_from_file.Text, "DES"+File_Name.Text);
                     break;
                 case 4:
                     break;
@@ -110,20 +101,20 @@ namespace Proiect
                     break;
 
             }
+            
         }
 
         private void Decrypt_B_Click(object sender, EventArgs e) {
             switch (choice) {
                 case 1:
                     break;
-                case 2: {
-                        AES aes = new AES();
-                        aes.Initialize();
-                        string encrypt = aes.Decrypt(aes.Encrypt(fileContent));
-                        Text_from_files.Text = encrypt;
-                        break;
-                    }
-                case 3:
+                case 2:                
+                    Text_from_file.Text = aes.Decrypt(crypted);
+                    files.writeFile(Text_from_file.Text, File_Name.Text);
+                    break;
+                case 3:                
+                    Text_from_file.Text = des.Decrypt(crypted);
+                    files.writeFile(Text_from_file.Text, File_Name.Text);
                     break;
                 case 4:
                     break;
