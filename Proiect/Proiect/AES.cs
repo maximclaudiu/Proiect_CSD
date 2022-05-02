@@ -49,5 +49,9 @@ namespace Proiect
             }
             return plaintext;
         }
+        public string get_Key()
+        {
+            return System.Text.Encoding.UTF8.GetString(Key);
+        }
     }
 }

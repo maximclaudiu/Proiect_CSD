@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using System.Linq;
+using System.Diagnostics;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using System.IO;
@@ -14,10 +14,13 @@ namespace Proiect
             );
         MySqlCommand command;
         MySqlDataReader reader;
-        string query = "select * from `keys`";
+        string query = "";
         UInt16 choice = 0;
         byte[] crypted;
-        Files files = new Files(); 
+        double part_time;
+        Stopwatch time = new Stopwatch ();
+        Files files = new Files();
+        MySQL sql = new MySQL();
         AES aes = new AES();
         DES des = new DES();
 
@@ -49,24 +52,25 @@ namespace Proiect
             }
         }
 
-        private void Select_B_Click(object sender, EventArgs e) {
-            if (con.State == ConnectionState.Open) {
+        private void Select_B_Click(object sender, EventArgs e)
+        {
+            /*       if (con.State == ConnectionState.Open) {
 
-                command.CommandText = query;
-                reader = command.ExecuteReader();
-                Text_from_file.Text = "";
-                while (reader.Read()) {
-                    int i = 0;
-                    while (i < reader.FieldCount) {
-                        Text_from_file.Text += reader[i].ToString() + " ";
-                        i++;
-                    }
-                    Text_from_file.Text += "\r\n";
-                }
-                reader.Close();
-            }
+                       command.CommandText = query;
+                       reader = command.ExecuteReader();
+                       Text_from_file.Text = "";
+                       while (reader.Read()) {
+                           int i = 0;
+                           while (i < reader.FieldCount) {
+                               Text_from_file.Text += reader[i].ToString() + " ";
+                               i++;
+                           }
+                           Text_from_file.Text += "\r\n";
+                       }
+                       reader.Close();
+                   }
+                */
         }
-
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
             choice = (ushort)(List_Crypto.Text[0] - 48);
         }
@@ -76,22 +80,27 @@ namespace Proiect
             Text_from_file.Text = strings.Item1;
             File_Name.Text = strings.Item2;
         }
-
         private void Crypt_B_Click(object sender, EventArgs e) {
             switch (choice) {
                 case 1:
                     break;
                 case 2: 
                     aes.Initialize();
+                    time.Restart();
                     crypted = aes.Encrypt(Text_from_file.Text);
+                    time.Stop();
+                  //Execute_sql( sql.insert_Performance(0, time.ElapsedMilliseconds, 0));
                     Text_from_file.Text = System.Text.Encoding.UTF8.GetString(crypted);
-                    files.writeFile(Text_from_file.Text, "AES"+File_Name.Text);
+                    files.writeFileC(Text_from_file.Text, "AES_"+File_Name.Text);
                     break;                    
                 case 3:
                     des.Initialize();
+                    time.Restart();
                     crypted = des.Encrypt(Text_from_file.Text);
+                    time.Stop();
+                   // Execute_sql( sql.insert_Performance(0, time.ElapsedMilliseconds, 0));
                     Text_from_file.Text = System.Text.Encoding.UTF8.GetString(crypted);
-                    files.writeFile(Text_from_file.Text, "DES"+File_Name.Text);
+                    files.writeFileC(Text_from_file.Text, "DES_"+File_Name.Text);
                     break;
                 case 4:
                     break;
@@ -99,22 +108,27 @@ namespace Proiect
                     break;
                 default:
                     break;
-
             }
-            
+            part_time = time.ElapsedMilliseconds;
         }
 
         private void Decrypt_B_Click(object sender, EventArgs e) {
             switch (choice) {
                 case 1:
                     break;
-                case 2:                
+                case 2:
+                    time.Restart();
                     Text_from_file.Text = aes.Decrypt(crypted);
-                    files.writeFile(Text_from_file.Text, File_Name.Text);
+                    time.Stop();
+                    Execute_sql(sql.insert_Performance(0, part_time, time.ElapsedMilliseconds));
+                    files.writeFileD(Text_from_file.Text, "AES_" + File_Name.Text);
                     break;
-                case 3:                
+                case 3:
+                    time.Restart();
                     Text_from_file.Text = des.Decrypt(crypted);
-                    files.writeFile(Text_from_file.Text, File_Name.Text);
+                    time.Stop();
+                    Execute_sql(sql.insert_Performance(0, part_time, time.ElapsedMilliseconds));
+                    files.writeFileD(Text_from_file.Text, "DES_" + File_Name.Text);
                     break;
                 case 4:
                     break;
@@ -125,5 +139,11 @@ namespace Proiect
 
             }
         }
+        public void Execute_sql(string query)
+        {
+            command.CommandText = query;
+            command.ExecuteNonQuery();
+        }
+        
     }
 }

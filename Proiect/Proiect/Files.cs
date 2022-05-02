@@ -8,10 +8,13 @@ namespace Proiect
     class Files
     {
         string fileContent;
-        public void writeFile(string text, string filename) {
-            if (filename.Contains("encrypted"))
-                filename = filename.Substring(0, filename.Length - 13) + "-decrypted.txt";
-            filename = filename.Substring(0, filename.Length - 4) + "-encrypted.txt";
+        public void writeFileC(string text, string filename) {
+            filename = filename.Substring(0, filename.Length - 4) + "_Crypted.txt";
+            File.WriteAllTextAsync(filename, text);
+        }
+        public void writeFileD(string text, string filename)
+        {
+            filename = filename.Substring(0, filename.Length - 4) + "_Decrypted.txt";
             File.WriteAllTextAsync(filename, text);
         }
         public Tuple<string, string> openFile() {
