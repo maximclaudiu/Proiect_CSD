@@ -18,9 +18,10 @@ namespace Proiect
             return "INSERT INTO table_algorithm(ID,Name,Simetry) VALUES("
                 + id + ',' + "\'" + n + "\'" + ',' + s + ");";
         }
-        public string insert_Files(string data)
+        public string insert_Files(int id, string name, string hash, int alg, int key, int perf)
         {
-            return "INSERT INTO table_files" ;
+            return "INSERT INTO table_files(ID,Name,Hash,ID_Algorithm,Key_ID,ID_Performance) VALUES " +
+                id + ',' + "\'" + name + "\'" + ',' + "\'" + hash + "\'" + ',' + alg + ',' + key + ',' + perf + ");";
         }
         public string insert_Performance(int id, double c, double d)
         {

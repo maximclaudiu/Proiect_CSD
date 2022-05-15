@@ -17,7 +17,7 @@ namespace Proiect
         string query = "";
         UInt16 choice = 0;
         byte[] crypted;
-        double part_time;
+        double time_D,time_C;
         Stopwatch time = new Stopwatch ();
         Files files = new Files();
         MySQL sql = new MySQL();
@@ -54,22 +54,9 @@ namespace Proiect
 
         private void Select_B_Click(object sender, EventArgs e)
         {
-            /*       if (con.State == ConnectionState.Open) {
-
-                       command.CommandText = query;
-                       reader = command.ExecuteReader();
-                       Text_from_file.Text = "";
-                       while (reader.Read()) {
-                           int i = 0;
-                           while (i < reader.FieldCount) {
-                               Text_from_file.Text += reader[i].ToString() + " ";
-                               i++;
-                           }
-                           Text_from_file.Text += "\r\n";
-                       }
-                       reader.Close();
-                   }
-                */
+            Execute_sql(sql.insert_Performance(0, time_C, time_D));
+            //Execute_sql(sql.insert_Files(0, File_Name.Text, hash, alg, key, perf));
+            //Execute_sql(sql.insert_Keys(0, aes.get_Key(), aes.get_Key(), aes.get_Key().Length));
         }
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
             choice = (ushort)(List_Crypto.Text[0] - 48);
@@ -81,6 +68,7 @@ namespace Proiect
             File_Name.Text = strings.Item2;
         }
         private void Crypt_B_Click(object sender, EventArgs e) {
+            Save_metrics.Enabled = false;
             switch (choice) {
                 case 1:
                     break;
@@ -89,7 +77,6 @@ namespace Proiect
                     time.Restart();
                     crypted = aes.Encrypt(Text_from_file.Text);
                     time.Stop();
-                  //Execute_sql( sql.insert_Performance(0, time.ElapsedMilliseconds, 0));
                     Text_from_file.Text = System.Text.Encoding.UTF8.GetString(crypted);
                     files.writeFileC(Text_from_file.Text, "AES_"+File_Name.Text);
                     break;                    
@@ -98,7 +85,6 @@ namespace Proiect
                     time.Restart();
                     crypted = des.Encrypt(Text_from_file.Text);
                     time.Stop();
-                   // Execute_sql( sql.insert_Performance(0, time.ElapsedMilliseconds, 0));
                     Text_from_file.Text = System.Text.Encoding.UTF8.GetString(crypted);
                     files.writeFileC(Text_from_file.Text, "DES_"+File_Name.Text);
                     break;
@@ -109,10 +95,11 @@ namespace Proiect
                 default:
                     break;
             }
-            part_time = time.ElapsedMilliseconds;
+            time_C = time.ElapsedMilliseconds;
         }
 
         private void Decrypt_B_Click(object sender, EventArgs e) {
+            Save_metrics.Enabled = true;
             switch (choice) {
                 case 1:
                     break;
@@ -120,14 +107,12 @@ namespace Proiect
                     time.Restart();
                     Text_from_file.Text = aes.Decrypt(crypted);
                     time.Stop();
-                    Execute_sql(sql.insert_Performance(0, part_time, time.ElapsedMilliseconds));
                     files.writeFileD(Text_from_file.Text, "AES_" + File_Name.Text);
                     break;
                 case 3:
                     time.Restart();
                     Text_from_file.Text = des.Decrypt(crypted);
                     time.Stop();
-                    Execute_sql(sql.insert_Performance(0, part_time, time.ElapsedMilliseconds));
                     files.writeFileD(Text_from_file.Text, "DES_" + File_Name.Text);
                     break;
                 case 4:
@@ -136,8 +121,8 @@ namespace Proiect
                     break;
                 default:
                     break;
-
             }
+            time_D = time.ElapsedMilliseconds;
         }
         public void Execute_sql(string query)
         {

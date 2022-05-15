@@ -60,6 +60,9 @@ namespace Proiect
                 return null;
             }
         }
-
+        public string get_Key()
+        {
+            return System.Text.Encoding.UTF8.GetString(Key);
+        }
     }
 }

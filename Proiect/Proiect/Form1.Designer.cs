@@ -31,7 +31,7 @@ namespace Proiect
         {
             this.Connect_B = new System.Windows.Forms.Button();
             this.Text_from_file = new System.Windows.Forms.TextBox();
-            this.Select_B = new System.Windows.Forms.Button();
+            this.Save_metrics = new System.Windows.Forms.Button();
             this.List_Crypto = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.Open_File_B = new System.Windows.Forms.Button();
@@ -61,15 +61,16 @@ namespace Proiect
             this.Text_from_file.Size = new System.Drawing.Size(647, 269);
             this.Text_from_file.TabIndex = 1;
             // 
-            // Select_B
+            // Save_metrics
             // 
-            this.Select_B.Location = new System.Drawing.Point(107, 406);
-            this.Select_B.Name = "Select_B";
-            this.Select_B.Size = new System.Drawing.Size(89, 32);
-            this.Select_B.TabIndex = 0;
-            this.Select_B.Text = "Select";
-            this.Select_B.UseVisualStyleBackColor = true;
-            this.Select_B.Click += new System.EventHandler(this.Select_B_Click);
+            this.Save_metrics.Enabled = false;
+            this.Save_metrics.Location = new System.Drawing.Point(665, 100);
+            this.Save_metrics.Name = "Save_metrics";
+            this.Save_metrics.Size = new System.Drawing.Size(140, 32);
+            this.Save_metrics.TabIndex = 0;
+            this.Save_metrics.Text = "Salvati performantele";
+            this.Save_metrics.UseVisualStyleBackColor = true;
+            this.Save_metrics.Click += new System.EventHandler(this.Select_B_Click);
             // 
             // List_Crypto
             // 
@@ -167,7 +168,7 @@ namespace Proiect
             this.Controls.Add(this.Open_File_B);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.List_Crypto);
-            this.Controls.Add(this.Select_B);
+            this.Controls.Add(this.Save_metrics);
             this.Controls.Add(this.Text_from_file);
             this.Controls.Add(this.Connect_B);
             this.Name = "Form1";
@@ -181,7 +182,7 @@ namespace Proiect
 
         private System.Windows.Forms.Button Connect_B;
         private System.Windows.Forms.TextBox Text_from_file;
-        private System.Windows.Forms.Button Select_B;
+        private System.Windows.Forms.Button Save_metrics;
         private System.Windows.Forms.ComboBox List_Crypto;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button Open_File_B;
