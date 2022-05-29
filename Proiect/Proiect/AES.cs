@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using System.IO;
+﻿using System.IO;
 using System.Security.Cryptography;
 
 namespace Proiect
@@ -49,9 +47,8 @@ namespace Proiect
             }
             return plaintext;
         }
-        public string get_Key()
-        {
-            return System.Text.Encoding.UTF8.GetString(Key);
+        public string get_Key() {
+            return Files.BytetoString(Key);
         }
     }
 }

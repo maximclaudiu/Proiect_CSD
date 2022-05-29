@@ -18,7 +18,6 @@ namespace Proiect
             try {    
                 MemoryStream mStream = new MemoryStream();
                 System.Security.Cryptography.DES DESalg = System.Security.Cryptography.DES.Create();
-
                 CryptoStream cStream = new CryptoStream(mStream,
                     DESalg.CreateEncryptor(Key, IV),
                     CryptoStreamMode.Write);
@@ -27,7 +26,6 @@ namespace Proiect
 
                 cStream.Write(toEncrypt, 0, toEncrypt.Length);
                 cStream.FlushFinalBlock();
-
                 byte[] ret = mStream.ToArray();
 
                 cStream.Close();
@@ -60,9 +58,8 @@ namespace Proiect
                 return null;
             }
         }
-        public string get_Key()
-        {
-            return System.Text.Encoding.UTF8.GetString(Key);
+        public string get_Key() {
+            return Files.BytetoString(Key);
         }
     }
 }
